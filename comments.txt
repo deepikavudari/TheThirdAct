@@ -1,0 +1,10 @@
+create virtual env -> python venv -m myenv
+run virtual env -> myenv\Scripts\activate
+create database -> {
+mysql 
+enter password
+create database the_third_act_db;
+}
+python create_table.py -> runs create_table file and creates the tables
+
+# know about os and load_dotenv(), 

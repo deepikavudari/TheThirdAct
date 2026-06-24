@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+sqlalchemy
+pymysql
+passlib[argon2] 
+# hash password
+python-jose[cryptography]
+# for creating jwt tokens
+python-multipart # used to parse data from a form
+pydantic[email]
+python-dotenv
