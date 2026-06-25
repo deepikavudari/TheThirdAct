@@ -18,7 +18,7 @@ class Movie(BaseModel):
     posterUrl : str
     rating : float
     description : str
-    genre : str
+    genres : dict
     release_date : str
     duration : str
 

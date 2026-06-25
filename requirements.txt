@@ -9,3 +9,4 @@ python-jose[cryptography]
 python-multipart # used to parse data from a form
 pydantic[email]
 python-dotenv
+requests

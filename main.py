@@ -7,6 +7,8 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt,JWTError
 import os
 from dotenv import load_dotenv
+from fetchData import homePage
+import json
 
 app = FastAPI()
 
@@ -101,7 +103,7 @@ def get_profile(current_user : dict = Depends(get_current_user), db : Session = 
         "lists" : list_names
         }
 
-@app.post('/profile/createList')
+@app.post('/lists')
 def create_list(new_list : schemas.CreateList, current_user : dict = Depends(get_current_user), db : Session = Depends(get_db)):
     add_list = model.List(
         list_name = new_list.list_name,
@@ -116,3 +118,6 @@ def create_list(new_list : schemas.CreateList, current_user : dict = Depends(get
         "list_name" : add_list.list_name
     }
 
+@app.get('/')
+def root(data = Depends(homePage)):
+    return data
