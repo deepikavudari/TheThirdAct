@@ -13,6 +13,7 @@ export default function MovieSection({title,movies}){
                             return(
                                 <MovieCard
                                 key={movie.id}
+                                id = {movie.id}
                                 title = {movie.title}
                                 poster = {movie.poster}
                                 rating = {movie.rating}

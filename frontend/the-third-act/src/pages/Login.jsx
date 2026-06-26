@@ -1,10 +1,16 @@
-import {useState} from 'react'
+import {useContext, useState} from 'react'
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../components/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login(){
 
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
+
+    const {login} = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     async function validate_user(){
         const formData = new URLSearchParams();
@@ -26,10 +32,12 @@ export default function Login(){
 
             const result = await res.json();
             // token is present in this result
-            console.log(result);
+            login(result.access_token);
+            // console.log(result);
         } catch(error){
             console.log(`Failed to log in user : ${error}`);
         }
+        navigate("/");
     }
 
     return(

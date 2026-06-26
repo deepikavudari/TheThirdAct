@@ -1,13 +1,14 @@
 import { useState } from "react";
 import "../styles/signup.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function RenderSignup(){
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-
+    const navigate = useNavigate();
 
     async function sendInfo(){
         const userInfo = {
@@ -23,19 +24,24 @@ export default function RenderSignup(){
                 },
                 body : JSON.stringify(userInfo)
             });
+            const result = await res.json();
             if(!res.ok){
-                throw new Error(`Server error : ${res.status}`);
+                alert(result.detail);
+                navigate("/signup");
+                return;
             }
 
-            const result = await res.json();
+            
             console.log(result);
 
         }
         catch(error){
-            const signupPage = document.getElementsByClassName("signup-page")[0];
-            signupPage.innerHTML = `Failed to create account : ${error}`
+            console.log(error);
+            alert("Failed to create account, retry with different credentials");
+            navigate("/signup");
             return;
         }
+        navigate("/")
     }
 
     return(

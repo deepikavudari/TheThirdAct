@@ -1,7 +1,8 @@
 import { useState,useEffect } from "react";
 import MovieSection from "../components/MovieSection";
 
-export default function GetMovies(){
+
+export default function Home(){
     const [movies,setMovies] = useState([]);
     useEffect(()=>{
         async function fetchMovies(){
