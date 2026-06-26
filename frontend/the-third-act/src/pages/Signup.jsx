@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../styles/signup.css";
+import { Link } from "react-router-dom";
 
 export default function RenderSignup(){
     const [username, setUsername] = useState("");
@@ -76,7 +77,7 @@ export default function RenderSignup(){
                 <button onClick={sendInfo}>
                     Sign Up
                 </button>
-
+                <p className="page-link">Already have an account? <Link to = "/login">Login</Link></p>
             </div>
 
         </div>
