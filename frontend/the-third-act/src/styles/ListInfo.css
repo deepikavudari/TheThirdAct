@@ -61,3 +61,30 @@
     color: #aaa;
 
 }
+
+.delete-btn {
+    width: calc(100% - 24px);
+    margin: 10px 12px 14px;
+    padding: 10px 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+
+    background: transparent;
+    color: white;
+
+    font-weight: 700;
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.delete-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
+
+    transform: translateY(-2px);
+
+}

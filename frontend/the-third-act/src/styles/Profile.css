@@ -122,19 +122,13 @@
 .list-card{
 
     height:160px;
-
     background:#080808;
-
     border:1px solid rgba(255,255,255,0.1);
-
     border-radius:20px;
-
     padding:25px;
 
     display:flex;
-
     flex-direction:column;
-
     justify-content:flex-end;
 
     transition:.3s;
@@ -155,23 +149,23 @@
 .list-card h3{
 
     margin:0;
-
     font-size:22px;
-
     font-weight:700;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
 
 }
 
 
 
 .list-card p{
-
     color:#777;
-
     margin:8px 0 0;
-
     font-size:14px;
-
 }
 
 
@@ -179,9 +173,29 @@
 /* empty state */
 
 .empty{
-
     color:#777;
-
     font-size:18px;
-
 }
+
+.delete-button {
+    margin-top: auto;
+    align-self: flex-start;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 999px; /* makes it oval / pill */
+    padding: 8px 10px;
+    font-size: 153x;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* 
+.delete-btn:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+} */

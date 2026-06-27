@@ -2,6 +2,7 @@ import { useState,useEffect,useContext } from "react";
 import { useParams } from "react-router-dom";
 import fetch_movie_info from "../utils/fetch_movie_info";
 import { AuthContext } from "../components/AuthContext";
+import { Link } from "react-router-dom";
 import "../styles/ListInfo.css";
 
 
@@ -26,8 +27,10 @@ export default function ListInfo(){
             if(!res.ok){
                 throw new Error(result.detail);
             }
+            console.log(result.movies);
             setMovies(result.movies);
             setListName(result.list_name);
+            
             }
             catch(error){
                 console.log(error);
@@ -38,7 +41,33 @@ export default function ListInfo(){
             
         }
         getListMovies(id);
-    },[]);
+    },[id,token]);
+
+    async function del_movie(movie_id){
+        try {
+        const res = await fetch(`http://127.0.0.1:8000/list/${listId}/${movie_id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+
+        let data = null;
+        try {
+            data = await res.json();
+        } catch {console.log("error");}
+
+        if (!res.ok) {
+            throw new Error(data?.detail || "Delete failed");
+        }
+        setMovies(prev => prev.filter(m => m.movie_id !== movie_id));
+        setMovieInfo(prev => prev.filter(m => m[0].id !== movie_id));
+
+    } catch (error) {
+        console.log(error);
+    }
+    }
+
 
     const [movieInfo, setMovieInfo] = useState([]);
 
@@ -51,6 +80,8 @@ export default function ListInfo(){
                 fetch_movie_info(movie.movie_id)
             ))
         );
+
+        console.log(data);
 
         setMovieInfo(data);
 
@@ -72,12 +103,16 @@ export default function ListInfo(){
 
     if(movies.length===0){
         return(
-            <h2>
-                No movies added to this list yet!
-            </h2>
+            <>
+                <h1>{listName}</h1>
+                <h2>
+                    No movies added to this list yet!
+                </h2>
+            </>
         )
     }
 
+    console.log(listName);
     
 
     return(
@@ -86,22 +121,36 @@ export default function ListInfo(){
             <div className="list-movies-grid">
             {
                 movieInfo.map((movie)=>(
-                <div className="list-movie-card" key={movie[0].id}>
+                <Link to={`/movies/${movie[0].id}`}>
+                    <div className="list-movie-card" key={movie[0].id}>
 
-                    <img
-                        src={`https://image.tmdb.org/t/p/w500${movie[0].posterUrl}`}
-                        alt={movie[0].title}
-                    />
+                        <img
+                            src={`https://image.tmdb.org/t/p/w500${movie[0].posterUrl}`}
+                            alt={movie[0].title}
+                        />
 
-                    <div className="list-movie-info">
-                        <h3>{movie[0].title}</h3>
+                        <div className="list-movie-info">
+                            <h3>{movie[0].title}</h3>
 
-                        <p>
-                            ⭐ {movie[0].rating.toFixed(2)}
-                        </p>
+                            <p>
+                                ⭐ {movie[0].rating.toFixed(2)}
+                            </p>
+                        </div>
+
+                        <button 
+                        className="delete-btn"
+                        onClick={(e)=>{
+                            e.preventDefault();
+                            e.stopPropagation();
+                            del_movie(movie[0].id)}
+                        }
+                        >
+                            Delete
+                        </button>
+
                     </div>
-
-            </div>
+                </Link>
+                
             ))
         }
             </div>
