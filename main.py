@@ -8,9 +8,23 @@ from jose import jwt,JWTError
 import os
 from dotenv import load_dotenv
 from fetchData import homePage
-import json
+import requests
+from fastapi.middleware.cors import CORSMiddleware
+from fetch_movie_info import fetch_movie_info
+from search_data import search
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -95,12 +109,10 @@ def req_roles(allowed_roles:list[str]):
 @app.get('/profile')
 def get_profile(current_user : dict = Depends(get_current_user), db : Session = Depends(get_db)):
     user_list = db.query(model.List).filter(model.List.username==current_user['username']).all()
-    list_names = []
-    for each_list in user_list:
-        list_names.append(each_list.list_name)
+    
     return {
-        "message" : f"Hello {current_user['username']}",
-        "lists" : list_names
+        "username" : f"{current_user['username']}",
+        "lists" : user_list
         }
 
 @app.post('/lists')
@@ -118,6 +130,62 @@ def create_list(new_list : schemas.CreateList, current_user : dict = Depends(get
         "list_name" : add_list.list_name
     }
 
-@app.get('/')
+@app.get('/movies')
 def root(data = Depends(homePage)):
     return data
+
+@app.post('/list/{list_id}/{movie_id}')
+def add_movie_to_list(list_id :int, movie_id : int, current_user :dict = Depends(get_current_user), db : Session = Depends(get_db)):
+    existing_list = db.query(model.List).filter((model.List.id==list_id) & (model.List.username==current_user['username'])).first()
+
+    if existing_list is None :
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not matched or list doesnt exist")
+    
+    existing_movie = db.query(model.List_Movies).filter((model.List_Movies.list_id==existing_list.id) & (model.List_Movies.movie_id==movie_id)).first()
+
+    if existing_movie is not None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Movie already exists")
+    
+    
+    movie = model.List_Movies(
+        movie_id = movie_id,
+        list_id = existing_list.id
+    )
+
+    db.add(movie)
+    db.commit()
+    db.refresh(movie)
+
+    return {
+        "message" : "Movie added successfully",
+        "movie_id" : movie.movie_id,
+        "list_id" : movie.list_id
+    }
+
+@app.get("/movies/{movie_id}")
+def get_info(movie_id : int):
+    movie_details = fetch_movie_info(movie_id=movie_id)
+    return movie_details
+
+@app.get("/movies/search/{movie_name}")
+def search_movie(movie_name : str):
+    movies = search(movie_name)
+    return movies
+
+@app.get("/profile/{list_id}")
+def get_list_movies(list_id : int, current_user :dict = Depends(get_current_user), db : Session = Depends(get_db)):
+    existing_list = db.query(model.List).filter((model.List.id==list_id) & (model.List.username==current_user['username'])).first()
+
+    if existing_list is None :
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not matched or list doesnt exist")
+    movies_list = db.query(model.List_Movies).filter(model.List_Movies.list_id==list_id).all()
+    return {
+        "list_name" : existing_list.list_name,
+        "movies" : movies_list
+    }
+
+
+
+
+
+

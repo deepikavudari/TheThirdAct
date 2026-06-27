@@ -19,7 +19,6 @@ def fetch_movies(url : str):
     # error handling
     response.raise_for_status()
 
-    data = response.text
     parse_data = response.json()
     movie_data = parse_data["results"]
     movies_list = []
@@ -53,9 +52,14 @@ def homePage():
         "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1"
     }
     
-    result = {}
+    result = []
     for name,url in urls.items():
-        result[name] = fetch_movies(url)
+        arr = fetch_movies(url)
+        result.append(arr)
 
     return result
+
+
+
+
 

@@ -4,7 +4,7 @@ class CreateUser(BaseModel):
     username : str
     email : EmailStr
     password : str
-    role : str
+    role : str = "user"
 
 class LoginUser(BaseModel):
     username : str
@@ -25,6 +25,10 @@ class Movie(BaseModel):
 class CreateList(BaseModel):
     list_name : str
 
+class AddMovie(BaseModel):
+    title : str
+    poster : str
+    id : int
 
 
 

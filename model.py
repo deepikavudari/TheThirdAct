@@ -15,15 +15,19 @@ class List(Base):
     __tablename__ = "list"
 
     id = Column(Integer, primary_key = True, index = True)
-    username = Column(String(255), unique=True, index=True)
-    list_name = Column(String(255), unique=True, index=True)
+    username = Column(String(255), index=True)
+    list_name = Column(String(255), index=True)
+
+
+# add unique constraint
 
 class List_Movies(Base):
     __tablename__ = "list_movies"
     
     id = Column(Integer,index=True,unique=True, primary_key = True)
-    movie_id = Column(Integer, unique=True,index=True)
-    list_id = Column(Integer,unique=True,index=True)
+    movie_id = Column(Integer,index=True)
+    list_id = Column(Integer,index=True)
+    
 
 
 
