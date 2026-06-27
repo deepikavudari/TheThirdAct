@@ -2,11 +2,13 @@ import { useState } from "react";
 import "../styles/signup.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Error from "../components/Error";
 
 export default function RenderSignup(){
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error,setError] = useState("");
 
     const navigate = useNavigate();
 
@@ -26,8 +28,16 @@ export default function RenderSignup(){
             });
             const result = await res.json();
             if(!res.ok){
-                alert(result.detail);
-                navigate("/signup");
+                if(Array.isArray(result.detail)){
+                    // Pydantic validation errors
+                    setError(result.detail[0].message);
+                }
+                else{
+                    // Your HTTPException errors
+                    setError(result.detail);
+                    console.log(error);
+                    
+                }
                 return;
             }
 
@@ -36,12 +46,10 @@ export default function RenderSignup(){
 
         }
         catch(error){
+            setError("Unable to connect to server. Please try again.");
             console.log(error);
-            alert("Failed to create account, retry with different credentials");
-            navigate("/signup");
-            return;
         }
-        navigate("/")
+        navigate("/login")
     }
 
     return(
@@ -79,7 +87,7 @@ export default function RenderSignup(){
                     onChange={(e)=>setPassword(e.target.value)}
                 />
 
-
+                <Error msg={error}/>
                 <button onClick={sendInfo}>
                     Sign Up
                 </button>

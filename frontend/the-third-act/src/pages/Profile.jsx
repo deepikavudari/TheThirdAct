@@ -1,15 +1,15 @@
-import { useState, useEffect, useContext
-
- } from "react";
+import { useState, useEffect, useContext} from "react";
 import "../styles/Profile.css";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/AuthContext";
 import { Link } from "react-router-dom";
 
 
+
 export default function Profile(){
     const navigate = useNavigate();
     const [userData, setUserData] = useState({});
+
 
     const {token} = useContext(AuthContext);
     

@@ -5,14 +5,18 @@ import { AuthContext } from "../components/AuthContext";
 import "../styles/ListInfo.css";
 
 
+
 export default function ListInfo(){
     const [movies,setMovies] = useState([]);
+    const [loading, setLoading] = useState(true);
     const {listId} = useParams();
     const [listName,setListName] = useState("");
     const {token} = useContext(AuthContext);
     const id = Number(listId);
     useEffect(()=>{
         async function getListMovies(id){
+            try{
+                setLoading(true);
             const res = await fetch(`http://127.0.0.1:8000/profile/${id}`,{
                 headers : {
                     "Authorization" : `Bearer ${token}`
@@ -24,6 +28,14 @@ export default function ListInfo(){
             }
             setMovies(result.movies);
             setListName(result.list_name);
+            }
+            catch(error){
+                console.log(error);
+            }
+            finally{
+                setLoading(false);
+            }
+            
         }
         getListMovies(id);
     },[]);
@@ -50,7 +62,21 @@ export default function ListInfo(){
 
     },[movies]);
 
-    console.log(movieInfo);
+    if(loading){
+        return(
+            <h2>
+                Loading movies...
+            </h2>
+        )
+    }
+
+    if(movies.length===0){
+        return(
+            <h2>
+                No movies added to this list yet!
+            </h2>
+        )
+    }
 
     
 

@@ -2,11 +2,13 @@ import {useContext, useState} from 'react'
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../components/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Error from "../components/Error";
 
 export default function Login(){
 
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
+    const [error,setError] = useState("");
 
     const {login} = useContext(AuthContext);
 
@@ -26,15 +28,30 @@ export default function Login(){
                 },
                 body : formData
             });
-            if(!res.ok){
-                throw new Error(`Server error : ${res.status}`);
-            }
 
             const result = await res.json();
             // token is present in this result
+
+            if(!res.ok){
+                if(Array.isArray(result.detail)){
+                    // Pydantic validation errors
+                    setError(result.detail[0].message);
+                }
+                else{
+                    // Your HTTPException errors
+                    setError(result.detail);
+                    console.log(error);
+                    
+                }
+                return
+            }
+
             login(result.access_token);
+
+
         } catch(error){
             console.log(`Failed to log in user : ${error}`);
+            return;
         }
         navigate("/profile");
     }
@@ -67,7 +84,7 @@ export default function Login(){
                     onChange={(e)=>setPassword(e.target.value)}
                 />
 
-
+                <Error msg={error}/>
                 <button onClick={validate_user}>
                     Login
                 </button>
