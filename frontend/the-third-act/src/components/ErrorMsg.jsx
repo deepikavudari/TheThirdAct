@@ -7,7 +7,7 @@ export default function ErrorMsg({msg,closeModal}){
                 closeModal();
             },2000);
             // return ()=>clearTimeout(timeoutId);
-        },[]);
+        },[closeModal]);
 
         return(
             <div className="modal-overlay">
