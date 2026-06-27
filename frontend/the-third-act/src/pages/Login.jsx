@@ -33,11 +33,10 @@ export default function Login(){
             const result = await res.json();
             // token is present in this result
             login(result.access_token);
-            // console.log(result);
         } catch(error){
             console.log(`Failed to log in user : ${error}`);
         }
-        navigate("/");
+        navigate("/profile");
     }
 
     return(

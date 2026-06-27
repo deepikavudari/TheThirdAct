@@ -1,34 +1,31 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext
+
+ } from "react"
 import { useParams } from "react-router-dom";
 import "../styles/MovieDetails.css";
 import CastInfo from "../components/CastInfo";
+import  AddToListModal from "../components/AddToListModal";
+import { AuthContext } from "../components/AuthContext";
+import fetch_movie_info from "../utils/fetch_movie_info";
 
 export default function MovieDetails(){
     const {movie_id} = useParams();
     const [movieInfo, setMovieInfo] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const {token,lists} = useContext(AuthContext)
     useEffect(()=>{
-        async function fetch_movie_info(movie_id){
-            try{
-                const res = await fetch(`http://127.0.0.1:8000/movies/${movie_id}`);
-                if(!res.ok){
-                    throw new Error("Failed to fetch movie details");
-                }
-                const data = await res.json();
-                setMovieInfo(data);
+        async function getMovie(){
+            const data = await fetch_movie_info(movie_id);
 
-            }
-            catch(error){
-                console.log(error);
-            }
+            setMovieInfo(data);
         }
-        fetch_movie_info(movie_id);
+        getMovie();
     },[movie_id])
 
     if(!movieInfo){
         return <h2>Loading...</h2>;
     }
 
-    
 
     return(
         <>
@@ -94,9 +91,23 @@ export default function MovieDetails(){
                 </div>
 
 
-                <button className="add-btn">
+                <button 
+                className="add-btn"
+                onClick={()=>setShowModal(true)}
+                >
                     + Add to List
                 </button>
+
+                {
+                    showModal && (
+                        <AddToListModal
+                        closeModal = {()=>setShowModal(false)}
+                        token = {token}
+                        lists = {lists}
+                        movie_id={movie_id}
+                        />
+                    )
+                }
 
 
             </div>

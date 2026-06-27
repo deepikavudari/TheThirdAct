@@ -7,7 +7,9 @@ import NavBar from "./components/NavBar";
 import MovieDetails from "./pages/MovieDetails";
 import Search from "./components/Search";
 import SearchedMovies from "./pages/SearchedMovies";
+import CreateList from "./components/CreateList";
 import Profile from "./pages/Profile";
+import ListInfo from "./pages/ListInfo";
 
 export default function App(){
   return(
@@ -21,6 +23,8 @@ export default function App(){
         <Route path="/search" element= {<Search/>}/>
         <Route path="/search/:query" element = {<SearchedMovies />} />
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/createList" element={<CreateList/>}/>
+        <Route path="/profile/:listId" element={<ListInfo/>}/>
       </Routes>
       </>
     
