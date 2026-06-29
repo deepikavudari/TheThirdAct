@@ -8,3 +8,15 @@ create database the_third_act_db;
 python create_table.py -> runs create_table file and creates the tables
 
 # know about os and load_dotenv(), 
+
+# docker
+# docker creates its own database in the container and to make sure it creates the required tables we do @app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
+
+but then how do we make sure 
+we use docker volumes, generally when we do docker compose down, we are esentially destroying the container and if data is stored in the container it gets destroyed everytime we do docker compose down,
+to make sure data persists we use volume, volume is the permanent data attached to our container that persists even after the container is destroyed
+
+what if we do want to delete the volumes too?
+docker compose down -v

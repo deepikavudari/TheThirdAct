@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      ./backend
+    
+    ports : 
+      - "8000:8000"
+    depends_on:
+      - redis
+      - database
+
+    env_file:
+      - .env
+  
+  redis:
+    image: redis:8.0
+    ports : 
+      - "6379:6379"
+  frontend:
+    build:
+      ./frontend/the-third-act
+    
+    ports:
+      - "5173:5173"
+
+  
+  database:
+    image: mysql:8.0
+
+    environment:
+      MYSQL_ROOT_PASSWORD : ${MYSQL_PASSWORD}
+      MYSQL_DATABASE : ${MYSQL_DATABASE}
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      
+    
+volumes:
+  mysql_data:

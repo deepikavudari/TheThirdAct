@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 import schemas,model,utils
-from database import get_db
+from database import get_db, engine
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from datetime import datetime, timedelta, timezone
@@ -16,6 +16,7 @@ import redis
 import json
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from model import Base
 
 app = FastAPI()
 
@@ -23,7 +24,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "http://127.0.0.1:5173"
+        "http://127.0.0.1:8000"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -31,8 +32,8 @@ app.add_middleware(
 )
 
 redis_client = redis.Redis(
-    host = "localhost",
-    port=6379,
+    host = "redis",
+    port = 6379,
     decode_responses=True
     )   
 
@@ -42,6 +43,11 @@ ALGORITHM = "HS256"
 # creating a token that is valid for 2 hours, will create a refresh token in future
 ACCESS_TOKEN_EXPIRY_MINUTES = 120
 
+# docker doesnt create tables -> to do that we use this
+
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
 
 
 def create_access_token(data:dict):
