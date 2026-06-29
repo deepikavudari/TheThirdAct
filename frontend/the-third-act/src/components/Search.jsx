@@ -25,7 +25,7 @@ export default function Search(){
 
                     <input
                         type="text"
-                        placeholder="Search movies..."
+                        placeholder="Search movies or genre..."
                         value={query}
                         onChange={(e)=>{setQuery(e.target.value)}}
                     />

@@ -22,6 +22,22 @@ export default function SearchedMovies(){
         getMovie();
     },[query])
 
+    useEffect(()=>{
+        async function getMovieGenre(){
+            try{
+                const res = await fetch(`http://127.0.0.1:8000/search/${query}`);
+                if(!res.ok){
+                    throw new Error("Failed to fetch searched movie");
+                }
+                const data = await res.json();
+                setMovies([...movies,...data]);
+            } catch(error){
+                console.log(error);
+            }
+        }
+        getMovieGenre();
+    },[query])
+
     if(movies.length==0){
         return(
             <h1>

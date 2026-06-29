@@ -27,6 +27,7 @@ class List_Movies(Base):
     id = Column(Integer,index=True,unique=True, primary_key = True)
     movie_id = Column(Integer,index=True)
     list_id = Column(Integer,index=True)
+
     
 
 

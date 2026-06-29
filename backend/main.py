@@ -297,6 +297,84 @@ def del_list(list_id : int, current_user:dict = Depends(get_current_user), db : 
 
 
 
+def get_genre_list():
+
+    cached_search = redis_client.get("genreList")
+    if cached_search:
+        return json.loads(cached_search)
+
+    TMDB_TOKEN = os.getenv("TMDB_TOKEN")
+
+    url = "https://api.themoviedb.org/3/genre/movie/list?language=en"
+
+    headers = {
+        "accept" : "application/json",
+        "Authorization" : f"Bearer {TMDB_TOKEN}"
+    }
+
+    response = requests.get(url,headers=headers)
+    data = response.json()
+    genre_list = data["genres"]
+    redis_client.set(
+        "genreList",
+        json.dumps(genre_list),
+        ex=86400
+    )
+    return genre_list
+    
+@app.get("/search/{genre_name}")
+def get_movies_genre(genre_name : str):
+
+    genre_list = get_genre_list()
+
+    print(genre_list)
+
+    genre_id = None
+    for genre in genre_list['genres']:
+        if(genre['name'].lower()==genre_name.lower()):
+            genre_id = genre['id']
+            break
+    
+    if genre_id is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Genre doesn't exist")
+    
+
+    TMDB_TOKEN = os.getenv("TMDB_TOKEN")
+    url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc"
+    params = {
+        "with_genres" : genre_id,
+    }
+    headers = {
+        "Authorization" : f"Bearer {TMDB_TOKEN}"
+    }
+
+    response = requests.get(
+        url=url,
+        params=params,
+        headers=headers
+    )
+
+    movies = response.json()
+
+    movies_list = []
+
+    for movie in movies["results"]:
+        new_movie = {
+            "id" : movie["id"],
+            "title" : movie["title"],
+            "release_date" : movie["release_date"],
+            "rating" : movie["vote_average"],
+            "poster" : movie["poster_path"]
+        }
+        movies_list.append(new_movie)
+    
+    return movies_list
+
+
+
+
+
+
 
 
 
