@@ -17,6 +17,7 @@ import json
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from model import Base
+from getrecos import get_recos
 
 app = FastAPI()
 
@@ -24,7 +25,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "http://127.0.0.1:8000"
+        "http://127.0.0.1:8000",
+        "https://the-third-act-u1ux.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -370,12 +372,18 @@ def get_movies_genre(genre_name : str):
     
     return movies_list
 
+@app.get("/recos/{movie_id}")
+def get_movie_recos(movie_id : int):
+    key = f"recos:{movie_id}"
+    cached_response = redis_client.get(key)
+    if cached_response is not None:
+        return json.loads(cached_response)
+    
+    data = get_recos(movie_id)
+    redis_client.set(
+        key,
+        json.dumps(data),
+        ex=3600
+    )
 
-
-
-
-
-
-
-
-
+    return data

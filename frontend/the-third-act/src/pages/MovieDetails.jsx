@@ -7,10 +7,12 @@ import CastInfo from "../components/CastInfo";
 import  AddToListModal from "../components/AddToListModal";
 import { AuthContext } from "../components/AuthContext";
 import fetch_movie_info from "../utils/fetch_movie_info";
+import MovieSection from "../components/MovieSection";
 
 export default function MovieDetails(){
     const {movie_id} = useParams();
     const [movieInfo, setMovieInfo] = useState(null);
+    const [movieRecos, setMovieRecos] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const {token,lists} = useContext(AuthContext)
     useEffect(()=>{
@@ -20,6 +22,19 @@ export default function MovieDetails(){
             setMovieInfo(data);
         }
         getMovie();
+    },[movie_id])
+
+    useEffect(()=>{
+        async function getRecos(){
+            const res = await fetch(`http://127.0.0.1:8000/recos/${movie_id}`);
+            const result = await res.json();
+            if(!res.ok){
+                throw new Error(result.detail);
+            }
+            setMovieRecos(result)
+            console.log(result);
+        }
+        getRecos()
     },[movie_id])
 
     if(!movieInfo){
@@ -130,6 +145,11 @@ export default function MovieDetails(){
             })
         }
         </div>
+
+        <MovieSection
+            title = "Similar movies"
+            movies = {movieRecos}
+        />
         
         
         </>

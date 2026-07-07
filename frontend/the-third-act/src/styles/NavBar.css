@@ -1,126 +1,81 @@
 .navbar{
-
     height:80px;
-
     width:100%;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     padding:0 60px;
-
     background:rgba(0,0,0,0.85);
-
     border-bottom:1px solid rgba(255,255,255,0.08);
-
     position:sticky;
     top:0;
     z-index:100;
-
     backdrop-filter:blur(10px);
-
 }
 
 
 .logo{
-
     font-family:"Syne",sans-serif;
-
     font-size:25px;
-
     font-weight:700;
-
     letter-spacing:3px;
-
     color:white;
-
     text-decoration:none;
-
 }
 
 
 
 .nav-links{
-
     display:flex;
-
     align-items:center;
-
     gap:35px;
-
 }
 
 
 
 .nav-links a{
-
     color:#b8b8b8;
-
     text-decoration:none;
-
     font-family:"Inter",sans-serif;
-
     font-size:15px;
-
     transition:0.3s;
-
 }
 
 
 
 .nav-links a:hover{
-
     color:white;
-
 }
 
 
 
 .signup-btn{
-
     background:white;
-
     color:black !important;
-
     padding:10px 22px;
-
     border-radius:30px;
-
     font-weight:600;
-
 }
 
 
 
 .signup-btn:hover{
-
     background:#e8e8e8;
-
 }
 
 
 
 .logout-btn{
-
     background:none;
-
     border:none;
-
     color:#b8b8b8;
-
     cursor:pointer;
-
     font-size:15px;
-
     font-family:"Inter",sans-serif;
-
 }
 
 
 
 .logout-btn:hover{
-
     color:white;
-
 }

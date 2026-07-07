@@ -6,42 +6,55 @@ import "../styles/SearchedMovies.css"
 export default function SearchedMovies(){
     const {query} = useParams();
     const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(true);
     useEffect(()=>{
-        async function getMovie(){
+        async function getMovies(){
+            let allMovies = [];
+            setLoading(true);
             try{
-                const res = await fetch(`http://127.0.0.1:8000/movies/search/${query}`);
-                if(!res.ok){
-                    throw new Error("Failed to fetch searched movie");
+                const res = await fetch(
+                `http://127.0.0.1:8000/movies/search/${query}`
+                );
+
+                if(res.ok){
+                    const data = await res.json();
+                    allMovies = [...allMovies,...data]
                 }
-                const data = await res.json();
-                setMovies(data);
+
             } catch(error){
-                console.log(error);
+                console.log("Search API failed ,", error);
             }
+            try{
+                const res = await fetch(
+                `http://127.0.0.1:8000/search/${query}`);
+                if(res.ok){
+                    const data = await res.json();
+                    allMovies = [...allMovies,...data]
+                }
+            } catch(error){
+                console.log("Genre API failed, ", error);
+            }
+            
+            setMovies(allMovies);
+            setLoading(false);
+
         }
-        getMovie();
+        getMovies();
+
     },[query])
 
-    useEffect(()=>{
-        async function getMovieGenre(){
-            try{
-                const res = await fetch(`http://127.0.0.1:8000/search/${query}`);
-                if(!res.ok){
-                    throw new Error("Failed to fetch searched movie");
-                }
-                const data = await res.json();
-                setMovies([...movies,...data]);
-            } catch(error){
-                console.log(error);
-            }
-        }
-        getMovieGenre();
-    },[query])
+    if(loading){
+        return(
+            <h1>
+                Loading
+            </h1>
+        )
+    }
 
     if(movies.length==0){
         return(
             <h1>
-                Loading
+                No movies found! Check spelling and try again.
             </h1>
         )
     }
