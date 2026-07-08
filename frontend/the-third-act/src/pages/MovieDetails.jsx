@@ -26,7 +26,7 @@ export default function MovieDetails(){
 
     useEffect(()=>{
         async function getRecos(){
-            const API_URL = import.meta.env.BACKEND_URL;
+            const API_URL = import.meta.env.VITE_API_URL;
             const res = await fetch(`${API_URL}/recos/${movie_id}`);
             const result = await res.json();
             if(!res.ok){

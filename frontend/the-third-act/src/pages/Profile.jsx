@@ -17,7 +17,8 @@ export default function Profile(){
     useEffect(()=>{
         async function getUserData(){
             try{
-                const res = await fetch("http://127.0.0.1:8000/profile",{
+                const API_URL = import.meta.env.VITE_API_URL;
+                const res = await fetch(`${API_URL}/profile`,{
                     headers : {
                         "Authorization" : `Bearer ${token}`
                     }
@@ -44,7 +45,7 @@ export default function Profile(){
 
     async function del_list(list_id){
         try {
-        const API_URL = import.meta.env.BACKEND_URL;
+        const API_URL = import.meta.env.VITE_API_URL;
         const res = await fetch(`${API_URL}/list/${list_id}`, {
             method: "DELETE",
             headers: {

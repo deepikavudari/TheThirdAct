@@ -14,7 +14,7 @@ export default function CreateList(){
             list_name : listName,
         }
         try{
-            const API_URL = import.meta.env.BACKEND_URL;
+            const API_URL = import.meta.env.VITE_API_URL;
             const res = await fetch(`${API_URL}/lists`,{
                 "method" : "POST",
                 headers : {

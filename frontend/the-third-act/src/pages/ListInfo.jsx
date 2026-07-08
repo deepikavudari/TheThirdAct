@@ -16,7 +16,7 @@ export default function ListInfo(){
     const id = Number(listId);
     useEffect(()=>{
         async function getListMovies(id){
-            const API_URL = import.meta.env.BACKEND_URL;
+            const API_URL = import.meta.env.VITE_API_URL;
             try{
                 setLoading(true);
             const res = await fetch(`${API_URL}/${id}`,{

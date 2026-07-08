@@ -19,7 +19,7 @@ export default function Login(){
 
         formData.append("username",username);
         formData.append("password",password);
-        const API_URL = import.meta.env.BACKEND_URL;
+        const API_URL = import.meta.env.VITE_API_URL;
         try{
             const res = await fetch(`${API_URL}/login`,{
                 method : "POST",

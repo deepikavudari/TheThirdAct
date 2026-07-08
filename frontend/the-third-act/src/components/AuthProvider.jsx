@@ -15,7 +15,7 @@ export default function AuthProvider({children}){
                 return;
             }
             try{
-                const API_URL = import.meta.env.BACKEND_URL;
+                const API_URL = import.meta.env.VITE_API_URL;
                 const res = await fetch(`${API_URL}/profile`,{
                     headers : {
                         "Authorization" : `Bearer ${token}`
