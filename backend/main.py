@@ -34,8 +34,8 @@ app.add_middleware(
 )
 
 redis_client = redis.from_url(
-        os.getenv("REDIS_URL"),
-        decode_responses=True
+    os.getenv("REDIS_URL"),
+    decode_responses=True
     )   
 
 load_dotenv()
