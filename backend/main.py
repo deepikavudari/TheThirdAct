@@ -36,8 +36,9 @@ app.add_middleware(
 redis_client = redis.Redis(
     host = os.getenv("REDISHOST"),
     port = os.getenv("REDISPORT"),
-    password = os.getenv("REDISPASSWORD"),
-    decode_responses=True
+    username = os.getenv("REDISUSER") or None,
+    password = os.getenv("REDISPASSWORD") or None,
+    decode_responses = True
     )   
 
 load_dotenv()
