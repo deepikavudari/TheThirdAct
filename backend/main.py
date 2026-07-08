@@ -34,8 +34,8 @@ app.add_middleware(
 )
 
 redis_client = redis.Redis(
-    host = "redis",
-    port = 6379,
+    host = os.getenv("REDISHOST"),
+    port = os.getenv("REDISPORT"),
     decode_responses=True
     )   
 

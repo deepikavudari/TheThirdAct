@@ -6,13 +6,18 @@ import os
 
 load_dotenv()
 
-DB_USER = os.getenv("MYSQL_USER")
-DB_PASSWORD = os.getenv("MYSQL_PASSWORD")
-DB_HOST = os.getenv("MYSQL_HOST")
-DB_PORT = os.getenv("MYSQL_PORT")
-DB_DATABASE = os.getenv("MYSQL_DATABASE")
+DB_USER = os.getenv("MYSQLUSER")
+DB_PASSWORD = os.getenv("MYSQLPASSWORD")
+DB_HOST = os.getenv("MYSQLHOST")
+DB_PORT = os.getenv("MYSQLPORT")
+DB_DATABASE = os.getenv("MYSQLDATABASE")
 
-DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@database:{DB_PORT}/{DB_DATABASE}"
+print(DB_HOST)
+print(DB_PORT)
+print(DB_USER)
+print(DB_DATABASE)
+
+DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}"
 
 # connection
 engine = create_engine(DATABASE_URL)
