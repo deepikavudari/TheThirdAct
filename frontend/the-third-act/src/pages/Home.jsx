@@ -9,6 +9,8 @@ export default function Home(){
             const API_URL = import.meta.env.BACKEND_URL;
             try{
                 const res = await fetch(`${API_URL}/movies`);
+
+                console.log(API_URL);
             
 
                 if(!res.ok){
