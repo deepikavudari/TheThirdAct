@@ -12,9 +12,8 @@ export default function SearchedMovies(){
             let allMovies = [];
             setLoading(true);
             try{
-                const res = await fetch(
-                `http://127.0.0.1:8000/movies/search/${query}`
-                );
+                const API_URL = import.meta.env.BACKEND_URL;
+                const res = await fetch(`${API_URL}/movies/search/${query}`);
 
                 if(res.ok){
                     const data = await res.json();
@@ -25,8 +24,8 @@ export default function SearchedMovies(){
                 console.log("Search API failed ,", error);
             }
             try{
-                const res = await fetch(
-                `http://127.0.0.1:8000/search/${query}`);
+                const API_URL = import.meta.env.BACKEND_URL;
+                const res = await fetch(`${API_URL}/search/${query}`);
                 if(res.ok){
                     const data = await res.json();
                     allMovies = [...allMovies,...data]

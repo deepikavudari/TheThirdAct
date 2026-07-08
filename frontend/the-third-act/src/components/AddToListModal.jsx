@@ -9,7 +9,8 @@ export default function AddToListModal({lists, closeModal, token, movie_id}){
 
     async function addMovie(movie_id,listId){
             try{
-                const res = await fetch(`http://127.0.0.1:8000/list/${listId}/${movie_id}`,{
+                const API_URL = import.meta.env.BACKEND_URL;
+                const res = await fetch(`${API_URL}/list/${listId}/${movie_id}`,{
                     method : "POST",
                     headers : {
                         "Authorization" : `Bearer ${token}`,

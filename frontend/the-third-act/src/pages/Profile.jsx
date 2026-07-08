@@ -44,7 +44,8 @@ export default function Profile(){
 
     async function del_list(list_id){
         try {
-        const res = await fetch(`http://127.0.0.1:8000/list/${list_id}`, {
+        const API_URL = import.meta.env.BACKEND_URL;
+        const res = await fetch(`${API_URL}/list/${list_id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -54,7 +55,7 @@ export default function Profile(){
         let data = null;
         try {
             data = await res.json();
-        } catch {}
+        } catch(error) {console.log(error);}
 
         if (!res.ok) {
             throw new Error(data?.detail || "Delete failed");

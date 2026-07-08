@@ -14,7 +14,8 @@ export default function CreateList(){
             list_name : listName,
         }
         try{
-            const res = await fetch("http://127.0.0.1:8000/lists",{
+            const API_URL = import.meta.env.BACKEND_URL;
+            const res = await fetch(`${API_URL}/lists`,{
                 "method" : "POST",
                 headers : {
                     "Content-Type" : "application/json",

@@ -19,7 +19,8 @@ export default function RenderSignup(){
             password : password
         };
         try{
-            const res = await fetch("http://127.0.0.1:8000/signup",{
+            const API_URL = import.meta.env.BACKEND_URL;
+            const res = await fetch(`${API_URL},signup`,{
                 method : "POST",
                 headers : {
                     "Content-Type" : "application/json"

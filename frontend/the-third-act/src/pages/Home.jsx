@@ -6,8 +6,9 @@ export default function Home(){
     const [movies,setMovies] = useState([]);
     useEffect(()=>{
         async function fetchMovies(){
+            const API_URL = import.meta.env.BACKEND_URL;
             try{
-                const res = await fetch("http://127.0.0.1:8000/movies");
+                const res = await fetch(`${API_URL}/movies`);
             
 
                 if(!res.ok){

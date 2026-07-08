@@ -15,7 +15,8 @@ export default function AuthProvider({children}){
                 return;
             }
             try{
-                const res = await fetch("http://127.0.0.1:8000/profile",{
+                const API_URL = import.meta.env.BACKEND_URL;
+                const res = await fetch(`${API_URL}/profile`,{
                     headers : {
                         "Authorization" : `Bearer ${token}`
                     }

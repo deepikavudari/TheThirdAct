@@ -19,9 +19,9 @@ export default function Login(){
 
         formData.append("username",username);
         formData.append("password",password);
-
+        const API_URL = import.meta.env.BACKEND_URL;
         try{
-            const res = await fetch("http://127.0.0.1:8000/login",{
+            const res = await fetch(`${API_URL}/login`,{
                 method : "POST",
                 headers : {
                     "Content-Type" : "application/x-www-form-urlencoded"
