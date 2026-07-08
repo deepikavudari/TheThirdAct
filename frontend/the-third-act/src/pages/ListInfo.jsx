@@ -46,7 +46,8 @@ export default function ListInfo(){
 
     async function del_movie(movie_id){
         try {
-        const res = await fetch(`http://127.0.0.1:8000/list/${listId}/${movie_id}`, {
+            const API_URL = import.meta.env.VITE_API_URL;
+        const res = await fetch(`${API_URL}/list/${listId}/${movie_id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
