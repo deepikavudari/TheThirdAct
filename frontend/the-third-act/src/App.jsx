@@ -10,6 +10,7 @@ import SearchedMovies from "./pages/SearchedMovies";
 import CreateList from "./components/CreateList";
 import Profile from "./pages/Profile";
 import ListInfo from "./pages/ListInfo";
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 export default function App(){
   return(
@@ -26,6 +27,7 @@ export default function App(){
         <Route path="/createList" element={<CreateList/>}/>
         <Route path="/profile/:listId" element={<ListInfo/>}/>
       </Routes>
+      <SpeedInsights />
       </>
     
   )
