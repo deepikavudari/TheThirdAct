@@ -19,7 +19,7 @@ export default function ListInfo(){
             const API_URL = import.meta.env.VITE_API_URL;
             try{
                 setLoading(true);
-            const res = await fetch(`${API_URL}/${id}`,{
+            const res = await fetch(`${API_URL}/profile/${id}`,{
                 headers : {
                     "Authorization" : `Bearer ${token}`
                 }
