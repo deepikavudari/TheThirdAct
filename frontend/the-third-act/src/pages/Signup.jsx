@@ -20,7 +20,7 @@ export default function RenderSignup(){
         };
         try{
             const API_URL = import.meta.env.VITE_API_URL;
-            const res = await fetch(`${API_URL},signup`,{
+            const res = await fetch(`${API_URL}/signup`,{
                 method : "POST",
                 headers : {
                     "Content-Type" : "application/json"
@@ -34,7 +34,7 @@ export default function RenderSignup(){
                     setError(result.detail[0].message);
                 }
                 else{
-                    // Your HTTPException errors
+                    // HTTPException errors
                     setError(result.detail);
                     console.log(error);
                     
